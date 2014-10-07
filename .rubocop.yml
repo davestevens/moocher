@@ -1,0 +1,15 @@
+AllCops:
+  Exclude:
+    - Guardfile
+    - bin/**
+    - config/**/*
+    - db/**/*
+    - script/**
+Documentation:
+  Enabled: false
+StringLiterals:
+  EnforcedStyle: double_quotes
+TrailingBlankLines:
+  EnforcedStyle: final_newline
+RegexpLiteral:
+  MaxSlashes: 0
