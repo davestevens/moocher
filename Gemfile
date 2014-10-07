@@ -8,6 +8,7 @@ gem "coffee-rails", "~> 4.0.0"
 gem "haml-rails"
 gem "simple_form"
 gem "bootstrap-sass"
+gem "requirejs-rails"
 
 gem "figaro"
 
