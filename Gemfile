@@ -25,6 +25,7 @@ group :development, :test do
   gem "guard-rspec", require: false
   gem "guard-bundler"
   gem "guard-rubocop"
+  gem "teaspoon"
 
   gem "rubocop"
 end
