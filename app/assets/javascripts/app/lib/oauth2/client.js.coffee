@@ -17,9 +17,14 @@ define [
       response = null
       $.ajax
         type: "post"
-        url: @_build_url(@token_path)
-        headers: options.headers
-        data: options.parameters
+        url: "/proxy"
+        data:
+          proxy:
+            method: "post"
+            endpoint: @endpoint
+            path: @token_path
+            headers: options.headers
+            parameters: options.parameters
         success: (_data, _status, xhr) -> response = xhr
         error: (xhr, _status, _error) -> response = xhr
         async: false
@@ -27,10 +32,15 @@ define [
 
     request: (method, path, options = {}) ->
       $.ajax
-        type: method
-        url: @_build_url(path)
-        headers: options.headers
-        data: options.parameters
+        type: "post"
+        url: "/proxy"
+        data:
+          proxy:
+            method: method
+            endpoint: @endpoint
+            path: path
+            headers: options.headers
+            parameters: options.parameters
 
     client_credentials: ->
       @_client_credentials ||= new @strategies.client_credentials

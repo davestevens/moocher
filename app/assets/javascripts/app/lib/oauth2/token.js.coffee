@@ -12,6 +12,7 @@ define ->
 
     request: (method, path, options = {}) ->
       @refresh() if @has_expired()
+      options.headers = $.merge(@_headers(), options.headers?)
       @client.request(method, path, options)
 
     get: (path, options) -> @request("GET", path, options)
@@ -24,6 +25,8 @@ define ->
 
     # private
     _expires_at: (expires_in) -> +Date.now() + (expires_in * 1000)
+
+    _headers: -> Authorization: "Bearer #{@access_token}"
 
     _refresh_parameters: ->
       throw new Error("Cannot refresh token") unless @refresh_token
