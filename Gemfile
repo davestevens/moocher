@@ -10,6 +10,8 @@ gem "simple_form"
 gem "bootstrap-sass"
 gem "requirejs-rails"
 
+gem "faraday"
+
 gem "figaro"
 
 gem "version"
@@ -35,4 +37,5 @@ group :test do
   gem "rspec-rails"
   gem "shoulda-matchers", require: false
   gem "factory_girl_rails"
+  gem "webmock"
 end
