@@ -9,38 +9,24 @@ define [
       @secret = options.secret
       @endpoint = options.endpoint
       @token_path = options.token_path || "/oauth/token"
+      @proxy = options.proxy
       @strategies =
         client_credentials: options.client_credentials || Strategy
         password: options.password || Strategy
 
     get_token: (options = {}) ->
       response = null
-      $.ajax
-        type: "post"
-        url: "/proxy"
-        data:
-          proxy:
-            method: "post"
-            endpoint: @endpoint
-            path: @token_path
-            headers: options.headers
-            parameters: options.parameters
+      request_settings = $.extend({
         success: (_data, _status, xhr) -> response = xhr
         error: (xhr, _status, _error) -> response = xhr
         async: false
+      }, @_request_settings("post", @token_path, options))
+
+      $.ajax(request_settings)
       response
 
     request: (method, path, options = {}) ->
-      $.ajax
-        type: "post"
-        url: "/proxy"
-        data:
-          proxy:
-            method: method
-            endpoint: @endpoint
-            path: path
-            headers: options.headers
-            parameters: options.parameters
+      $.ajax(@_request_settings(method, path, options))
 
     client_credentials: ->
       @_client_credentials ||= new @strategies.client_credentials
@@ -62,3 +48,20 @@ define [
 
     # private
     _build_url: (path) -> "#{@endpoint}#{path}"
+
+    _request_settings: (method, post, options = {}) ->
+      if @proxy
+        @_proxy_request_options(method, post, options)
+      else
+        @_request_options(method, post, options)
+
+    _request_options: (method, path, options = {}) ->
+      type: method
+      url: @_build_url(path)
+      headers: options.headers
+      data: options.parameters
+
+    _proxy_request_options: (method, path, options = {}) ->
+      type: @proxy.type || "post"
+      url: @proxy.path
+      data: @_request_options(method, path, options)
