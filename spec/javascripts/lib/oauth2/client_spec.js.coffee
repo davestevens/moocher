@@ -82,7 +82,7 @@ define ["app/lib/oauth2/client"], (Client) ->
           expect(request.method).to.equal(proxy_settings.type)
           expect(request.url).to.equal(proxy_settings.path)
 
-      xit "passes headers and parametes to request", sinon.test ->
+      it "passes headers and parametes to request", sinon.test ->
         endpoint = "http://example.com"
         client = new Client(endpoint: endpoint)
         headers = { foo: "bar" }
@@ -91,8 +91,8 @@ define ["app/lib/oauth2/client"], (Client) ->
         client.get_token(headers: headers, parameters: parameters)
 
         request = @requests[0]
-        # TODO: check that request.requestBody includes headers, parameters,
-        # method, endpoint, path
+        expect(request.requestHeaders).to.include(headers)
+        expect(request.requestBody).to.equal("bish=bosh")
 
     describe "#request", ->
       context "when using a proxy", ->
@@ -113,8 +113,14 @@ define ["app/lib/oauth2/client"], (Client) ->
           expect(request.async).to.be.true
           expect(request.method).to.equal(proxy_settings.type)
           expect(request.url).to.equal(proxy_settings.path)
-          # TODO: check that request.requestBody includes headers, parameters,
-          # type & url
+
+          expect(request.requestBody).to.include("type=#{method}")
+          expected_url = window.encodeURIComponent("#{endpoint}#{path}")
+          expect(request.requestBody).to.include("url=#{expected_url}")
+          expected_headers = window.encodeURI("headers[foo]=bar")
+          expect(request.requestBody).to.include(expected_headers)
+          expected_parameters = window.encodeURI("data[bish]=bosh")
+          expect(request.requestBody).to.include(expected_parameters)
 
       context "when not using a proxy", ->
         it "makes an asynchronous request", sinon.test ->
