@@ -107,13 +107,13 @@ define ["app/lib/oauth2/token"], (Token) ->
 
     describe "#request", ->
       context "when Token has expired", ->
-        it "refreshes the token before making a request", sinon.test ->
+        it "attempts to refresh the token before making request", sinon.test ->
           client = new Object
             request: $.noop
             get_token: -> { responseJSON: "responseJSON" }
           @stub(client, "request")
-          token = new Token(client, expires_in: 0, refresh_token: "refresh_token")
-          @spy(token, "refresh")
+          token = new Token(client, expires_in: 0)
+          @stub(token, "refresh")
 
           token.request("GET", "/path")
 
@@ -142,34 +142,36 @@ define ["app/lib/oauth2/token"], (Token) ->
         expect(token.request).to.have.been.calledWith("GET", path, options)
 
     describe "#refresh", ->
-      context "with no refresh token", ->
-        it "throws error", ->
-          client = new Object(get_token: $.noop)
-          token = new Token(client)
+      it "request a refresh token from @client", sinon.test ->
+        client = new Object(get_token: -> { responseJSON: "responseJSON" })
+        token = new Token(client)
+        @spy(client, "get_token")
 
-          expect(-> token.refresh()).to.throw(Error, "Cannot refresh token")
+        refresh_parameters = "refresh_parameters"
+        @stub(token, "refresh_parameters", -> refresh_parameters)
 
-      context "with refresh token", ->
-        it "request a refresh token from @client", sinon.test ->
-          client_id = "client_id"
-          client_secret = "client_secret"
-          client = new Object
-            get_token: $.noop
-            id: client_id
-            secret: client_secret
-          refresh_token = "refresh_token"
-          token = new Token(client, refresh_token: refresh_token)
-          @stub(client, "get_token", -> { responseJSON: "responseJSON" })
+        token.refresh()
 
-          token.refresh()
+        expect(client.get_token)
+          .to.have.been.calledWith(parameters: refresh_parameters)
 
-          parameters =
-            client_id: client_id
-            client_secret: client_secret
-            grant_type: "refresh_token"
-            refresh_token: refresh_token
-          expect(client.get_token)
-            .to.have.been.calledWith(parameters: parameters)
+      it "updates @token with returned data", sinon.test ->
+        token_data = "token_data"
+        client = new Object(get_token: -> { responseJSON: token_data })
+        token = new Token(client)
+        @stub(token, "refresh_parameters")
+        @stub(token, "set_data")
+
+        token.refresh()
+
+        expect(token.set_data).to.have.been.calledWith(token_data)
+
+    describe "#refresh_parameters", ->
+      it "throws error", ->
+        token = new Token()
+
+        expect(-> token.refresh_parameters())
+          .to.throw(Error, "Cannot refresh Token")
 
     describe "#has_expired", ->
       context "when current time is equal to @expires_at", ->

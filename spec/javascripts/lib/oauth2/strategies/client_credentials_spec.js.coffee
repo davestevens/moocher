@@ -23,3 +23,11 @@ define [
           client_id: client_id
           client_secret: client_secret
         })
+
+    describe "#token_class", ->
+      it "is 'ClientCredentialsToken'", ->
+        token_class = new ClientCredentials({}).token_class
+
+        result = token_class.name
+
+        expect(result).to.equal("ClientCredentialsToken")

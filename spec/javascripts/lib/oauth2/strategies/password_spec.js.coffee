@@ -27,3 +27,11 @@ define [
           username: username
           password: password
         })
+
+    describe "#token_class", ->
+      it "is 'PasswordToken'", ->
+        token_class = new Password({}).token_class
+
+        result = token_class.name
+
+        expect(result).to.equal("PasswordToken")

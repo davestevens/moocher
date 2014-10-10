@@ -1,4 +1,7 @@
-define ["app/lib/oauth2/strategy"], (Strategy) ->
+define [
+  "app/lib/oauth2/strategy",
+  "app/lib/oauth2/tokens/password"
+], (Strategy, PasswordToken) ->
   class PasswordStrategy extends Strategy
     parameters: (username, password) ->
       grant_type: "password"
@@ -6,3 +9,5 @@ define ["app/lib/oauth2/strategy"], (Strategy) ->
       client_secret: @client.secret
       username: username
       password: password
+
+    token_class: PasswordToken

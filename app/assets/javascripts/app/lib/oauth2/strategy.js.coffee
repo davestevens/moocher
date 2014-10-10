@@ -2,9 +2,9 @@ define ["jquery", "app/lib/oauth2/token"], ($, Token) ->
   class Strategy
     constructor: (options) ->
       @client = options.client
-      @token_class = options.token_class || Token
+      @token = options.token || new @token_class(@client)
 
-    token_from_hash: (data) -> new @token_class(@client, data)
+    token_from_hash: (data) -> @token.set_data(data)
 
     get_token: ->
       parameters = @parameters(arguments...)
@@ -12,3 +12,5 @@ define ["jquery", "app/lib/oauth2/token"], ($, Token) ->
       @token_from_hash(data.responseJSON)
 
     parameters: $.noop
+
+    token_class: Token
