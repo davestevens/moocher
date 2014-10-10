@@ -131,7 +131,7 @@ define ["app/lib/oauth2/token"], (Token) ->
           expect(client.request).to.have.been.calledWith("GET", "/path")
 
     describe "#get", ->
-      it "makes GET request", sinon.test ->
+      it "makes a GET request", sinon.test ->
         token = new Token()
         @stub(token, "request")
         path = "/some/path"
@@ -142,13 +142,48 @@ define ["app/lib/oauth2/token"], (Token) ->
         expect(token.request).to.have.been.calledWith("GET", path, options)
 
     describe "#post", ->
-      xit "makes POST request", ->
+      it "makes a POST request", sinon.test ->
+        token = new Token()
+        @stub(token, "request")
+        path = "/some/path"
+        options = { header: {}, parameters: {} }
+
+        token.post(path, options)
+
+        expect(token.request).to.have.been.calledWith("POST", path, options)
 
     describe "#put", ->
-      xit "makes PUT request", ->
+      it "makes a PUT request", sinon.test ->
+        token = new Token()
+        @stub(token, "request")
+        path = "/some/path"
+        options = { header: {}, parameters: {} }
+
+        token.put(path, options)
+
+        expect(token.request).to.have.been.calledWith("PUT", path, options)
 
     describe "#delete", ->
-      xit "makes DELETE request", ->
+      it "makes a DELETE request", sinon.test ->
+        token = new Token()
+        @stub(token, "request")
+        path = "/some/path"
+        options = { header: {}, parameters: {} }
+
+        token.delete(path, options)
+
+        expect(token.request).to.have.been.calledWith("DELETE", path, options)
+
+    describe "#head", ->
+      it "makes a HEAD request", sinon.test ->
+        token = new Token()
+        @stub(token, "request")
+        path = "/some/path"
+        options = { header: {}, parameters: {} }
+
+        token.head(path, options)
+
+        expect(token.request).to.have.been.calledWith("HEAD", path, options)
 
     describe "#refresh", ->
       it "request a refresh token from @client", sinon.test ->

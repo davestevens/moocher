@@ -18,6 +18,14 @@ define ->
 
     get: (path, options) -> @request("GET", path, options)
 
+    post: (path, options) -> @request("POST", path, options)
+
+    put: (path, options) -> @request("PUT", path, options)
+
+    delete: (path, options) -> @request("DELETE", path, options)
+
+    head: (path, options) -> @request("HEAD", path, options)
+
     refresh: ->
       data = @client.get_token(parameters: @refresh_parameters())
       @set_data(data.responseJSON)
