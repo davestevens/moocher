@@ -10,7 +10,7 @@ define [
         expires_at: 1234567890
         token_type: "token_type"
 
-    describe "#client", ->
+    describe ".client", ->
       it "returns to client given on initialization", ->
         client = new Object()
 
@@ -18,7 +18,7 @@ define [
 
         expect(result).to.equal(client)
 
-    describe "#token", ->
+    describe ".token", ->
       context "when passed", ->
         it "returns to token given on initialization", ->
           token = new Object()
@@ -33,7 +33,7 @@ define [
 
           expect(result).to.be.an.instanceOf(Token)
 
-    describe "#token_class", ->
+    describe ".token_class", ->
       it "is 'Token'", ->
         result = new Strategy({}).token_class
 

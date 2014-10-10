@@ -1,6 +1,6 @@
 define ["app/lib/oauth2/token"], (Token) ->
   describe "Lib / OAuth2 / Token", ->
-    describe "#client", ->
+    describe ".client", ->
       it "returns to client given on initialization", ->
         client = new Object()
 
@@ -8,7 +8,7 @@ define ["app/lib/oauth2/token"], (Token) ->
 
         expect(result).to.equal(client)
 
-    describe "#access_token", ->
+    describe ".access_token", ->
       it "returns to access_token given on initialization", ->
         access_token = "access_token"
 
@@ -16,7 +16,7 @@ define ["app/lib/oauth2/token"], (Token) ->
 
         expect(result).to.equal(access_token)
 
-    describe "#expires_at", ->
+    describe ".expires_at", ->
       context "when expires_at is passed", ->
         it "returns to 'expires_at' given on initialization", ->
           expires_at = 1234567890
@@ -35,7 +35,7 @@ define ["app/lib/oauth2/token"], (Token) ->
 
           expect(result).to.equal(expires_at)
 
-    describe "#refresh_token", ->
+    describe ".refresh_token", ->
       it "returns to refresh_token given on initialization", ->
         refresh_token = "refresh_token"
 
@@ -43,7 +43,7 @@ define ["app/lib/oauth2/token"], (Token) ->
 
         expect(result).to.equal(refresh_token)
 
-    describe "#token_type", ->
+    describe ".token_type", ->
       it "returns to token_type given on initialization", ->
         token_type = "token_type"
 
@@ -140,6 +140,15 @@ define ["app/lib/oauth2/token"], (Token) ->
         token.get(path, options)
 
         expect(token.request).to.have.been.calledWith("GET", path, options)
+
+    describe "#post", ->
+      xit "makes POST request", ->
+
+    describe "#put", ->
+      xit "makes PUT request", ->
+
+    describe "#delete", ->
+      xit "makes DELETE request", ->
 
     describe "#refresh", ->
       it "request a refresh token from @client", sinon.test ->

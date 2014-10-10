@@ -9,6 +9,14 @@ define [
 
       expect(password_strategy).to.be.an.instanceOf(Strategy)
 
+    describe ".token_class", ->
+      it "is 'PasswordToken'", ->
+        token_class = new Password({}).token_class
+
+        result = token_class.name
+
+        expect(result).to.equal("PasswordToken")
+
     describe "#parameters", ->
       it "return the required parameters for requesting an Access Token", ->
         client_id = "client_id"
@@ -27,11 +35,3 @@ define [
           username: username
           password: password
         })
-
-    describe "#token_class", ->
-      it "is 'PasswordToken'", ->
-        token_class = new Password({}).token_class
-
-        result = token_class.name
-
-        expect(result).to.equal("PasswordToken")

@@ -9,6 +9,14 @@ define [
 
       expect(client_credentials_strategy).to.be.an.instanceOf(Strategy)
 
+    describe ".token_class", ->
+      it "is 'ClientCredentialsToken'", ->
+        token_class = new ClientCredentials({}).token_class
+
+        result = token_class.name
+
+        expect(result).to.equal("ClientCredentialsToken")
+
     describe "#parameters", ->
       it "return the required parameters for requesting an Access Token", ->
         client_id = "client_id"
@@ -23,11 +31,3 @@ define [
           client_id: client_id
           client_secret: client_secret
         })
-
-    describe "#token_class", ->
-      it "is 'ClientCredentialsToken'", ->
-        token_class = new ClientCredentials({}).token_class
-
-        result = token_class.name
-
-        expect(result).to.equal("ClientCredentialsToken")

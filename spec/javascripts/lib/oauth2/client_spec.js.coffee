@@ -1,6 +1,6 @@
 define ["app/lib/oauth2/client"], (Client) ->
   describe "Lib / OAuth2 / Client", ->
-    describe "#id", ->
+    describe ".id", ->
       it "returns the id given on initialization", ->
         id = "id"
 
@@ -8,7 +8,7 @@ define ["app/lib/oauth2/client"], (Client) ->
 
         expect(result).to.equal(id)
 
-    describe "#secret", ->
+    describe ".secret", ->
       it "returns the secret given on initialization", ->
         secret = "secret"
 
@@ -16,7 +16,7 @@ define ["app/lib/oauth2/client"], (Client) ->
 
         expect(result).to.equal(secret)
 
-    describe "#endpoint", ->
+    describe ".endpoint", ->
       it "returns the endpoint given on initialization", ->
         endpoint = "http://example.com"
 
@@ -24,11 +24,26 @@ define ["app/lib/oauth2/client"], (Client) ->
 
         expect(result).to.equal(endpoint)
 
-    describe "#token_path", ->
+    describe ".token_path", ->
+      it "returns the token_path given on initialization", ->
+        token_path = "/token/path"
+
+        result = new Client(token_path: token_path).token_path
+
+        expect(result).to.equal(token_path)
+
       it "defaults to '/oauth/token'", ->
         result = new Client({}).token_path
 
         expect(result).to.equal("/oauth/token")
+
+    describe ".proxy", ->
+      it "returns the proxy given on initialization", ->
+        proxy = new Object()
+
+        result = new Client(proxy: proxy).proxy
+
+        expect(result).to.equal(proxy)
 
       context "when passed on initialization", ->
         it "returns the token_path given on initialization", ->
