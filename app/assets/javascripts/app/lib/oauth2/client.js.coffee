@@ -1,8 +1,8 @@
 define [
   "jquery",
-  "app/lib/oauth2/strategy",
+  "app/lib/oauth2/strategies",
   "app/lib/oauth2/token"
-], ($, Strategy, Token) ->
+], ($, Strategies, Token) ->
   class Client
     constructor: (options) ->
       @id = options.id
@@ -11,8 +11,8 @@ define [
       @token_path = options.token_path || "/oauth/token"
       @proxy = options.proxy
       @strategies =
-        client_credentials: options.client_credentials || Strategy
-        password: options.password || Strategy
+        client_credentials: options.client_credentials || Strategies.client_credentials
+        password: options.password || Strategies.password
 
     get_token: (options = {}) ->
       response = null
@@ -29,22 +29,10 @@ define [
       $.ajax(@_request_settings(method, path, options))
 
     client_credentials: ->
-      @_client_credentials ||= new @strategies.client_credentials
-        client: @
-        parameters: ->
-          grant_type: "client_credentials"
-          client_id: @client.id
-          client_secret: @client.secret
+      @_client_credentials ||= new @strategies.client_credentials(client: @)
 
     password: ->
-      @_password ||= new @strategies.password
-        client: @
-        parameters: (username, password)->
-          grant_type: "password"
-          client_id: @client.id
-          client_secret: @client.secret
-          username: username
-          password: password
+      @_password ||= new @strategies.password(client: @)
 
     # private
     _build_url: (path) -> "#{@endpoint}#{path}"
