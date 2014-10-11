@@ -23,3 +23,11 @@ define [
         result = access_tokens.url()
 
         expect(result).to.equal("/access_tokens")
+
+    describe ".local", ->
+      it "is true (uses Backbone.dualStorage to store data)", ->
+        access_tokens = new AccessTokens()
+
+        result = access_tokens.local
+
+        expect(result).to.be.true

@@ -1,11 +1,18 @@
 modules:
   - name: "application"
 paths:
+  bootstrap: "bootstrap"
   jquery: "jquery/dist/jquery"
   marionette: "marionette/lib/backbone.marionette"
   backbone: "backbone/backbone"
+  "backbone.dualStorage": "Backbone.dualStorage/backbone.dualstorage.amd"
+  text: "requirejs-text/text"
 shim:
+  bootstrap:
+    deps: ["jquery"]
   backbone:
     deps: ["underscore", "jquery"]
   marionette:
+    deps: ["backbone"]
+  "backbone.dualStorage":
     deps: ["backbone"]
