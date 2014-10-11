@@ -3,5 +3,8 @@
   "version": "0.0.0",
   "authors": [
     "Dave Stevens"
-  ]
+  ],
+  "dependencies": {
+    "marionette": "~2.2.1"
+  }
 }

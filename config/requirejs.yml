@@ -1,0 +1,11 @@
+modules:
+  - name: "application"
+paths:
+  jquery: "jquery/dist/jquery"
+  marionette: "marionette/lib/backbone.marionette"
+  backbone: "backbone/backbone"
+shim:
+  backbone:
+    deps: ["underscore", "jquery"]
+  marionette:
+    deps: ["backbone"]
