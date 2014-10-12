@@ -31,6 +31,8 @@ define [
       client_id: null
       client_secret: null
       endpoint: null
+      username: null
+      password: null
       access_token: null
       expires_at: null
       refresh_token: null

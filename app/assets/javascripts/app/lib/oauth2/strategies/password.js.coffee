@@ -5,9 +5,9 @@ define [
   class PasswordStrategy extends Strategy
     token_class: PasswordToken
 
-    parameters: (username, password) ->
+    parameters: (options = {}) ->
       grant_type: "password"
       client_id: @client.id
       client_secret: @client.secret
-      username: username
-      password: password
+      username: options.username
+      password: options.password

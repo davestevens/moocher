@@ -20,7 +20,8 @@ define [
 
     _validate_credentials: ->
       try
-        access_token = @_strategy().get_token()
+        access_token = @_strategy()
+          .get_token(@model.pick("username", "password"))
         @model.save(_.pick(access_token, _.keys(@model.attributes)))
       catch err
         alert(err)

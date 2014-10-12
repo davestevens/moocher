@@ -26,7 +26,8 @@ define [
         username = "username"
         password = "password"
 
-        result = password_strategy.parameters(username, password)
+        result = password_strategy
+          .parameters(username: username, password: password)
 
         expect(result).to.deep.equal({
           grant_type: "password"
