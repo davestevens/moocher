@@ -2,7 +2,7 @@
   <h1>AccessTokens#show</h1>
 </div>
 
-<dl>
+<dl class="dl-horizontal">
   <dt>Name</dt>
   <dd><%= name %></dd>
 
@@ -23,29 +23,29 @@
 
   <dt>Password</dt>
   <dd><%= password %></dd>
-
-  <div class="well">
-    <dl class="dl-horizontal">
-      <dt>Access Token</dt>
-      <dd><%= access_token %></dd>
-
-      <div class="<% if (expired) { %>bg-danger text-danger<% } %>">
-        <dt>Expires At</dt>
-        <dd><%= expires_at %></dd>
-      </div>
-
-      <dt>Refresh Token</dt>
-      <dd><%= refresh_token %></dd>
-
-      <dt>Token Type</dt>
-      <dd><%= token_type %></dd>
-    </dl>
-    <p>
-      <button id="validate_credentials" class="btn btn-success">Validate Access Token Credentials</button>
-      <button id="refresh" class="btn btn-default">Refresh Access Token</button>
-    </p>
-  </div>
 </dl>
+
+<div class="well">
+  <dl class="dl-horizontal">
+    <dt>Access Token</dt>
+    <dd><%= access_token %></dd>
+
+    <div class="<% if (expired) { %>bg-danger text-danger<% } %>">
+      <dt>Expires At</dt>
+      <dd><%= expires_at %></dd>
+    </div>
+
+    <dt>Refresh Token</dt>
+    <dd><%= refresh_token %></dd>
+
+    <dt>Token Type</dt>
+    <dd><%= token_type %></dd>
+  </dl>
+  <p>
+    <button id="validate_credentials" class="btn btn-success">Validate Access Token Credentials</button>
+    <button id="refresh" class="btn btn-default">Refresh Access Token</button>
+  </p>
+</div>
 
 <p>
   <a class="btn btn-primary" href="#access_tokens/<%= id %>/edit">Edit</a>
