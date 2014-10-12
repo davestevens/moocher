@@ -1,29 +1,9 @@
 define [
   "backbone",
   "underscore",
-  "jquery"
-], (Backbone, _, $) ->
-  class Errors
-    constructor: (attributes) ->
-      @attributes = attributes
-      @errors = {}
-
-    validate_blank: (keys...) ->
-      _.each(keys, (key) => @add(key, @blank_error) if @blank(@attributes[key]))
-    blank: (value) -> _.isEmpty($.trim(value))
-    blank_error: "can't be blank"
-
-    validate_inclusion: (key, array) ->
-      @add("strategy", @inclusion_error) if @excludes(@attributes[key], array)
-    excludes: (value, array) -> array.indexOf(value) == -1
-    inclusion_error: "is not includes in the list"
-
-    add: (key, value) ->
-      @errors[key] ||= []
-      @errors[key].push(value)
-
-    result: -> !_.isEmpty(@errors) && @errors
-
+  "app/services/model_errors",
+  "app/lib/oauth2/client"
+], (Backbone, _, ModelErrors, OAuth2Client) ->
   class AccessToken extends Backbone.Model
     defaults:
       name: ""
@@ -39,7 +19,7 @@ define [
       token_type: "bearer"
 
     validate: (attrs, options) ->
-      errors = new Errors(attrs)
+      errors = new ModelErrors(attrs)
       errors.validate_blank("client_id", "client_secret", "endpoint")
       errors.validate_inclusion("strategy", _.keys(@strategies))
       errors.result()
@@ -47,3 +27,27 @@ define [
     strategies:
       client_credentials: "Client Credentials"
       password: "Password"
+
+    access_token: -> @_strategy().token_from_hash(@attributes)
+
+    refresh: ->
+      access_token = @access_token()
+      access_token.refresh()
+      @save(_.pick(access_token, _.keys(@attributes)))
+
+    validate_access_token: ->
+      access_token = @_strategy().get_token(@pick("username", "password"))
+      @save(_.pick(access_token, _.keys(@attributes)))
+
+    # private
+    _strategy: -> @_client()[@get("strategy")]()
+
+    _client: -> new OAuth2Client(@_client_options())
+
+    _client_options: ->
+      id: @get("client_id")
+      secret: @get("client_secret")
+      endpoint: @get("endpoint")
+      proxy:
+        path: "/proxy"
+        type: "post"
