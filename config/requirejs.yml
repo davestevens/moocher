@@ -7,6 +7,7 @@ paths:
   backbone: "backbone/backbone"
   "backbone.dualStorage": "Backbone.dualStorage/backbone.dualstorage.amd"
   text: "requirejs-text/text"
+  serialize-object: "jquery-serialize-object/jquery.serialize-object"
 shim:
   bootstrap:
     deps: ["jquery"]

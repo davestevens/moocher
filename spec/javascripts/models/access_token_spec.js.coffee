@@ -23,14 +23,23 @@ define [
       expect(access_token.get("token_type")).to.equal("bearer")
 
     describe "Validations", ->
-      context "with a blank strategy", ->
+      context "with a strategy not in the allowed list", ->
         it "is invalid", ->
-          access_token = new AccessToken(strategy: "")
+          access_token = new AccessToken(strategy: "invalid strategy")
 
           result = access_token.isValid()
 
           expect(result).to.be.false
           expect(access_token.validationError).to.contain.key("strategy")
+
+      context "with a strategy in the allowed list", ->
+        it "is valid", ->
+          access_token = new AccessToken(client_id: "foo", client_secret: "bar")
+          access_token.set(strategy: _.keys(access_token.strategies)[0])
+
+          result = access_token.isValid()
+
+          expect(result).to.be.true
 
       context "with a blank client_id", ->
         it "is invalid", ->

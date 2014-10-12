@@ -13,3 +13,4 @@ define [
 
     appRoutes:
       "access_tokens": "index"
+      "access_tokens/new": "new"

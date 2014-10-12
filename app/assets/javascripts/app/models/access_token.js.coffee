@@ -8,10 +8,15 @@ define [
       @attributes = attributes
       @errors = {}
 
-    check_blank: (keys...) ->
+    validate_blank: (keys...) ->
       _.each(keys, (key) => @add(key, @blank_error) if @blank(@attributes[key]))
     blank: (value) -> _.isEmpty($.trim(value))
     blank_error: "can't be blank"
+
+    validate_inclusion: (key, array) ->
+      @add("strategy", @inclusion_error) if @excludes(@attributes[key], array)
+    excludes: (value, array) -> array.indexOf(value) == -1
+    inclusion_error: "is not includes in the list"
 
     add: (key, value) ->
       @errors[key] ||= []
@@ -32,9 +37,10 @@ define [
 
     validate: (attrs, options) ->
       errors = new Errors(attrs)
-      errors.check_blank("strategy", "client_id", "client_secret")
+      errors.validate_blank("client_id", "client_secret")
+      errors.validate_inclusion("strategy", _.keys(@strategies))
       errors.result()
 
-    _blank_error: "can't be blank"
-
-    _blank: (value) -> _.isEmpty($.trim(value))
+    strategies:
+      client_credentials: "Client Credentials"
+      password: "Password"
