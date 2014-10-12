@@ -1,7 +1,7 @@
 modules:
   - name: "application"
 paths:
-  bootstrap: "bootstrap"
+  bootstrap: "bootstrap/dist/js/bootstrap"
   jquery: "jquery/dist/jquery"
   marionette: "marionette/lib/backbone.marionette"
   backbone: "backbone/backbone"
