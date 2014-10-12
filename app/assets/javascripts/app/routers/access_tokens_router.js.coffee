@@ -15,3 +15,4 @@ define [
       "access_tokens": "index"
       "access_tokens/new": "new"
       "access_tokens/:id": "show"
+      "access_tokens/:id/edit": "edit"
