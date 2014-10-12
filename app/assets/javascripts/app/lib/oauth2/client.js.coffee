@@ -18,7 +18,7 @@ define [
       response = null
       request_settings = $.extend({
         success: (_data, _status, xhr) -> response = xhr
-        error: (xhr, _status, _error) -> response = xhr
+        error: (_xhr, _status, error) -> throw new Error(error)
         async: false
       }, @_request_settings("post", @token_path, options))
 

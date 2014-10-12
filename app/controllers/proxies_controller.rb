@@ -7,7 +7,7 @@ class ProxiesController < ActionController::Base
       request.body = body
     end
     # TODO: return all headers + request details
-    render json: response.body
+    render json: response.body, status: response.status
   end
 
   private

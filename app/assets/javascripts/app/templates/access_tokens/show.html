@@ -14,6 +14,31 @@
 
   <dt>Client Secret</dt>
   <dd><%= client_secret %></dd>
+
+  <dt>Endpoint</dt>
+  <dd><%= endpoint %></dd>
+
+  <div class="well">
+    <dl class="dl-horizontal">
+      <dt>Access Token</dt>
+      <dd><%= access_token %></dd>
+
+      <div class="<% if (expired) { %>bg-danger text-danger<% } %>">
+        <dt>Expires At</dt>
+        <dd><%= expires_at %></dd>
+      </div>
+
+      <dt>Refresh Token</dt>
+      <dd><%= refresh_token %></dd>
+
+      <dt>Token Type</dt>
+      <dd><%= token_type %></dd>
+    </dl>
+    <p>
+      <button id="validate_credentials" class="btn btn-success">Validate Access Token Credentials</button>
+      <button id="refresh" class="btn btn-default">Refresh Access Token</button>
+    </p>
+  </div>
 </dl>
 
 <p>

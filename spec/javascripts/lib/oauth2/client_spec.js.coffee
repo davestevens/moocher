@@ -59,6 +59,7 @@ define ["app/lib/oauth2/client"], (Client) ->
           token_path = "/token/path"
           endpoint = "http://example.com"
           client = new Client(endpoint: endpoint, token_path: token_path)
+          server_response(@server, "http://example.com/token/path")
 
           client.get_token({})
 
@@ -74,6 +75,7 @@ define ["app/lib/oauth2/client"], (Client) ->
             path: "/proxy"
             type: "POST"
           client = new Client(endpoint: endpoint, proxy: proxy_settings)
+          server_response(@server, "/proxy")
 
           client.get_token({})
 
@@ -82,17 +84,31 @@ define ["app/lib/oauth2/client"], (Client) ->
           expect(request.method).to.equal(proxy_settings.type)
           expect(request.url).to.equal(proxy_settings.path)
 
+      context "when request is unsuccessful", ->
+        it "throws an error", sinon.test ->
+          client = new Client(endpoint: "http://example.com")
+          server_response(@server, "http://example.com/oauth/token", 401)
+
+          expect(-> client.get_token()).to.throw(Error, "Unauthorized")
+
       it "passes headers and parametes to request", sinon.test ->
         endpoint = "http://example.com"
         client = new Client(endpoint: endpoint)
         headers = { foo: "bar" }
         parameters = { bish: "bosh" }
+        server_response(@server, "http://example.com/oauth/token")
 
         client.get_token(headers: headers, parameters: parameters)
 
         request = @requests[0]
         expect(request.requestHeaders).to.include(headers)
         expect(request.requestBody).to.equal("bish=bosh")
+
+      server_response = (server, url, status = 200) ->
+        server.respondWith(
+          "POST", url,
+          [status, { "Content-Type": "application/json" }, "{}"]
+        )
 
     describe "#request", ->
       context "when using a proxy", ->

@@ -30,6 +30,7 @@ define [
       strategy: null
       client_id: null
       client_secret: null
+      endpoint: null
       access_token: null
       expires_at: null
       refresh_token: null
@@ -37,7 +38,7 @@ define [
 
     validate: (attrs, options) ->
       errors = new Errors(attrs)
-      errors.validate_blank("client_id", "client_secret")
+      errors.validate_blank("client_id", "client_secret", "endpoint")
       errors.validate_inclusion("strategy", _.keys(@strategies))
       errors.result()
 
