@@ -1,4 +1,4 @@
-define ->
+define ["jquery"], ($) ->
   class Token
     constructor: (client, options = {}) ->
       @client = client
@@ -9,6 +9,7 @@ define ->
       @expires_at = options.expires_at || @_expires_at(options.expires_in)
       @refresh_token = options.refresh_token
       @token_type = options.token_type
+      $(@).trigger("update", @)
       @
 
     request: (method, path, options = {}) ->
