@@ -5,7 +5,9 @@ define [
   "app/views/access_tokens/new",
   "app/views/access_tokens/show",
   "app/views/access_tokens/edit",
-], (AccessToken, AccessTokens, IndexView, NewView, ShowView, EditView) ->
+  "app/views/access_tokens/delete"
+], (AccessToken, AccessTokens, IndexView, NewView, ShowView, EditView,
+  DeleteView) ->
   index: ->
     access_tokens = new AccessTokens()
     access_tokens.fetch()
@@ -27,3 +29,9 @@ define [
     access_tokens.fetch()
     access_token = access_tokens.get(id)
     @view = new EditView(model: access_token, collection: access_tokens)
+
+  delete: (id) ->
+    access_tokens = new AccessTokens()
+    access_tokens.fetch()
+    access_token = access_tokens.get(id)
+    @view = new DeleteView(model: access_token)

@@ -16,3 +16,4 @@ define [
       "access_tokens/new": "new"
       "access_tokens/:id": "show"
       "access_tokens/:id/edit": "edit"
+      "access_tokens/:id/delete": "delete"
