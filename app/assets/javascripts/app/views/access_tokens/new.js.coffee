@@ -12,7 +12,8 @@ define [
     events: { "submit form": "_submit_form" }
 
     template: (serialized_model) =>
-      attributes = _.extend(serialized_model, strategies: @model.strategies)
+      extra_options = { strategies: @model.strategies, action: "New" }
+      attributes = _.extend(serialized_model, extra_options)
       _.template(Template, attributes)
 
     # private

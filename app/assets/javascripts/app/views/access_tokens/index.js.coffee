@@ -6,6 +6,6 @@ define [
   class AccessTokensView extends Marionette.CompositeView
     childView: AccessTokenView
 
-    childViewContainer: "ul"
+    childViewContainer: ".list-group"
 
     template: _.template(Template)
