@@ -1,0 +1,13 @@
+<input class="form-control" data-attribute="name" placeholder="Name" value="<%= name %>"/>
+<br>
+<input class="form-control" data-attribute="path" placeholder="Path" value="<%= path %>"/>
+<input class="form-control" data-attribute="method" placeholder="Method" value="<%= method %>"/>
+<br>
+<select class="form-control" data-attribute="access_token_id">
+  <option value>Select an Access Token</option>
+  <% _.each(access_tokens, function(access_token) { %>
+    <option <% if (access_token_id == access_token.id) { %> selected <% } %> value="<%= access_token.id %>">
+      <%= access_token.name %>
+    </option>
+  <% }); %>
+</select>

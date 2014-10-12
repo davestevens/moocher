@@ -1,4 +1,4 @@
-define ->
+define ["jquery", "underscore"], ($, _) ->
   class Token
     constructor: (client, options = {}) ->
       @client = client
@@ -9,11 +9,12 @@ define ->
       @expires_at = options.expires_at || @_expires_at(options.expires_in)
       @refresh_token = options.refresh_token
       @token_type = options.token_type
+      $(@).trigger("update", @)
       @
 
     request: (method, path, options = {}) ->
       @refresh() if @has_expired()
-      options.headers = $.merge(@_headers(), options.headers?)
+      options.headers = _.extend(@_headers(), options.headers)
       @client.request(method, path, options)
 
     get: (path, options) -> @request("GET", path, options)
