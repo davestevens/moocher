@@ -6,7 +6,7 @@ define [
   class Request extends Backbone.Model
     defaults:
       name: ""
-      access_token_id: null
+      connection_id: null
       path: "/"
       method: "GET"
       header_ids: []

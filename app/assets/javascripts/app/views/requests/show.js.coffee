@@ -2,12 +2,12 @@ define [
   "marionette",
   "text!app/templates/requests/show.html",
   "app/views/requests/edit",
-  "app/collections/access_tokens",
+  "app/collections/connections",
   "app/collections/parameters",
   "app/views/parameters/index",
   "app/models/response",
   "app/views/responses/show"
-], (Marionette, Template, RequestsEditView, AccessTokens, Parameters,
+], (Marionette, Template, RequestsEditView, Connections, Parameters,
   ParametersIndexView, Response, ResponseView) ->
   class RequestView extends Marionette.LayoutView
     template: _.template(Template)
@@ -65,7 +65,7 @@ define [
     make_request: (event) ->
       event.preventDefault()
 
-      token_model = @_get_access_token(@model.get("access_token_id"))
+      token_model = @_get_access_token(@model.get("connection_id"))
       options = @model.options()
       token_model.request(@model.get("method"), @model.get("path"), options)
         .done( (data, status, xhr) =>
@@ -91,6 +91,6 @@ define [
 
     # private
     _get_access_token: (id) ->
-      access_tokens = new AccessTokens()
-      access_tokens.fetch()
-      access_tokens.get(id)
+      connections = new Connections()
+      connections.fetch()
+      connections.get(id)

@@ -4,12 +4,12 @@
 <input class="form-control" data-attribute="method" placeholder="Method" value="<%= method %>"/>
 <br>
 <div class="form-group">
-  <label for="access_token_id">Access Token</label>
-  <select class="form-control" data-attribute="access_token_id" id="access_token_id">
-    <option value>Select an Access Token</option>
-      <% _.each(access_tokens, function(access_token) { %>
-      <option <% if (access_token_id == access_token.id) { %> selected <% } %> value="<%= access_token.id %>">
-        <%= access_token.name %>
+  <label for="connection_id">Connection</label>
+  <select class="form-control" data-attribute="connection_id" id="connection_id">
+    <option value>Select a Connection</option>
+      <% _.each(connections, function(connection) { %>
+      <option <% if (connection_id == connection.id) { %> selected <% } %> value="<%= connection.id %>">
+        <%= connection.name %>
       </option>
     <% }); %>
   </select>

@@ -1,9 +1,9 @@
 define [
   "marionette",
   "app/lib/oauth2/client",
-  "text!app/templates/access_tokens/show.html"
+  "text!app/templates/connections/show.html"
 ], (Marionette, Client, Template) ->
-  class AccessTokenView extends Marionette.ItemView
+  class ConnectionsShowView extends Marionette.ItemView
     events:
       "click #validate_credentials": "_validate_credentials"
       "click #refresh": "_refresh"

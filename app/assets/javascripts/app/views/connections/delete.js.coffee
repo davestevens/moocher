@@ -1,8 +1,8 @@
 define [
   "marionette",
-  "text!app/templates/access_tokens/delete.html"
+  "text!app/templates/connections/delete.html"
 ], (Marionette, Template) ->
-  class AccessTokensDeleteView extends Marionette.ItemView
+  class ConnectionsDeleteView extends Marionette.ItemView
     template: _.template(Template)
 
     events:
@@ -16,4 +16,4 @@ define [
     _cancel: ->
       window.location.hash = "##{@route}/#{@model.id}"
 
-    route: "access_tokens"
+    route: "connections"

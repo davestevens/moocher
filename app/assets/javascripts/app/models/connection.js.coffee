@@ -5,7 +5,7 @@ define [
   "app/services/model_errors",
   "app/lib/oauth2/client"
 ], (Backbone, _, $, ModelErrors, OAuth2Client) ->
-  class AccessToken extends Backbone.Model
+  class Connection extends Backbone.Model
     defaults:
       name: ""
       strategy: null

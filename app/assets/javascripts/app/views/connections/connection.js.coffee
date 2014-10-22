@@ -1,8 +1,8 @@
 define [
   "marionette",
-  "text!app/templates/access_tokens/access_token.html"
+  "text!app/templates/connections/connection.html"
 ], (Marionette, Template) ->
-  class AccessTokenView extends Marionette.ItemView
+  class ConnectionView extends Marionette.ItemView
     tagName: "a"
 
     className: "list-group-item"
@@ -10,4 +10,4 @@ define [
     template: _.template(Template)
 
     attributes: =>
-      href: "#access_tokens/#{@model.id}"
+      href: "#connections/#{@model.id}"
