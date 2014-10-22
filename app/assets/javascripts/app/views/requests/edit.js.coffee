@@ -5,7 +5,8 @@ define [
 ], (Marionette, AccessTokens, Template) ->
   class RequestsEditView extends Marionette.ItemView
     template: (serialized_model) =>
-      attributes = _.extend(serialized_model, access_tokens: @_access_tokens())
+      attributes = _.extend(serialized_model,
+      access_tokens: @_access_tokens(), encodings: @_encodings)
       _.template(Template, attributes)
 
     events:
@@ -21,3 +22,9 @@ define [
       access_tokens = new AccessTokens()
       access_tokens.fetch()
       access_tokens.map((access_token) -> access_token.pick("id", "name"))
+
+    _encodings:
+      [
+        { value: "form", label: "Form-encoded" },
+        { value: "json", label: "JSON-encoded" }
+      ]

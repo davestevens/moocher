@@ -3,11 +3,24 @@
 <input class="form-control" data-attribute="path" placeholder="Path" value="<%= path %>"/>
 <input class="form-control" data-attribute="method" placeholder="Method" value="<%= method %>"/>
 <br>
-<select class="form-control" data-attribute="access_token_id">
-  <option value>Select an Access Token</option>
-  <% _.each(access_tokens, function(access_token) { %>
-    <option <% if (access_token_id == access_token.id) { %> selected <% } %> value="<%= access_token.id %>">
-      <%= access_token.name %>
-    </option>
-  <% }); %>
-</select>
+<div class="form-group">
+  <label for="access_token_id">Access Token</label>
+  <select class="form-control" data-attribute="access_token_id" id="access_token_id">
+    <option value>Select an Access Token</option>
+      <% _.each(access_tokens, function(access_token) { %>
+      <option <% if (access_token_id == access_token.id) { %> selected <% } %> value="<%= access_token.id %>">
+        <%= access_token.name %>
+      </option>
+    <% }); %>
+  </select>
+</div>
+<div class="form-group">
+  <label for="encoding">Encoding</label>
+  <select class="form-control" data-attribute="encoding" id="encoding">
+    <% _.each(encodings, function(enc) { %>
+      <option <% if (encoding == enc.value) { %> selected <% } %> value="<%= enc.value %>">
+        <%= enc.label %>
+      </option>
+    <% }); %>
+  </select>
+</div>
