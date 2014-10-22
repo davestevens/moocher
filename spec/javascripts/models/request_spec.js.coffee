@@ -12,7 +12,7 @@ define [
       request = new Request()
 
       expect(request.get("name")).to.equal("")
-      expect(request.get("access_token_id")).to.be.null
+      expect(request.get("connection_id")).to.be.null
 
       expect(request.get("path")).to.equal("/")
       expect(request.get("method")).to.equal("GET")
