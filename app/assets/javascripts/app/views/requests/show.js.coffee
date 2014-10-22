@@ -66,15 +66,15 @@ define [
       event.preventDefault()
 
       token_model = @_get_access_token(@model.get("access_token_id"))
-      token_model.request(@model.get("method"), @model.get("path"),
-      @model.options())
+      options = @model.options()
+      token_model.request(@model.get("method"), @model.get("path"), options)
         .done( (data, status, xhr) =>
           @response_model.set
             method: @model.get("method")
             url: @model.get("path")
             status: "#{xhr.status} - #{status}"
-            request_headers: @model.options().headers
-            request_body: @model.options().parameters
+            request_headers: options.headers
+            request_body: options.parameters
             response_headers: xhr.getAllResponseHeaders()
             body: data
         )
@@ -83,10 +83,10 @@ define [
             method: @model.get("method")
             url: @model.get("path")
             status: "#{xhr.status} - #{status}"
-            request_headers: @model.options().headers
-            request_body: @model.options().parameters
+            request_headers: options.headers
+            request_body: options.parameters
             response_headers: xhr.getAllResponseHeaders()
-            body: xhr.responseJSON
+            body: xhr.responseJSON || xhr.responseText
         )
 
     # private

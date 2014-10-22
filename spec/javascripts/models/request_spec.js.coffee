@@ -19,6 +19,7 @@ define [
 
       expect(request.get("header_ids")).to.deep.equal([])
       expect(request.get("parameter_ids")).to.deep.equal([])
+      expect(request.get("encoding")).to.deep.equal("form")
 
     describe "#push", ->
       it "adds a value to an array attribute", sinon.test ->
@@ -39,14 +40,28 @@ define [
         expect(request.get("header_ids")).to.deep.equal([1, 3])
 
     describe "#options", ->
-      it "returns headers and parameters hash", sinon.test ->
-        request = new Request()
-        parameters = [new Backbone.Model(name: "foo", value: "bar",
-        active: true)]
-        parameters_collection = new Object(selection: -> parameters)
-        @stub(request, "_parameters_collection", -> parameters_collection)
+      context "when using Form encoding", ->
+        it "returns headers and form encoded parameters", sinon.test ->
+          request = new Request(encoding: "form")
+          parameters = [new Backbone.Model(name: "foo", value: "bar",
+          active: true)]
+          parameters_collection = new Object(selection: -> parameters)
+          @stub(request, "_parameters_collection", -> parameters_collection)
 
-        result = request.options()
+          result = request.options()
 
-        expect(result)
-          .to.deep.equal(headers: { foo: "bar" }, parameters: { foo: "bar" })
+          expect(result)
+            .to.deep.equal(headers: { foo: "bar" }, parameters: "foo=bar")
+
+      context "when using JSON encoding", ->
+        it "returns headers and parameters hash", sinon.test ->
+          request = new Request(encoding: "json")
+          parameters = [new Backbone.Model(name: "foo", value: "bar",
+          active: true)]
+          parameters_collection = new Object(selection: -> parameters)
+          @stub(request, "_parameters_collection", -> parameters_collection)
+
+          result = request.options()
+
+          expect(result)
+            .to.deep.equal(headers: { foo: "bar" }, parameters: { foo: "bar" })

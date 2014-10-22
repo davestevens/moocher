@@ -1,7 +1,8 @@
 define [
   "backbone",
+  "jquery",
   "app/collections/parameters"
-], (Backbone, Parameters) ->
+], (Backbone, $, Parameters) ->
   class Request extends Backbone.Model
     defaults:
       name: ""
@@ -10,6 +11,7 @@ define [
       method: "GET"
       header_ids: []
       parameter_ids: []
+      encoding: "form"
 
     push: (attribute, value) ->
       array = _.clone(@get(attribute))
@@ -22,13 +24,17 @@ define [
 
     options: ->
       headers: @_parameters("header")
-      parameters: @_parameters("parameter")
+      parameters: @_set_encoding(@_parameters("parameter"))
 
     # private
 
     _parameters: (type) ->
       parameters = @_parameters_collection().selection(@get("#{type}_ids"))
       @_parameters_to_hash(parameters)
+
+    _set_encoding: (hash) ->
+      return $.param(hash) if @get("encoding") == "form"
+      hash
 
     _parameters_collection: ->
       parameters = new Parameters()
