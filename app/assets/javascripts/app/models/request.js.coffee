@@ -15,15 +15,12 @@ define [
 
     parse: (response, _options) ->
       _.tap(response, (r) =>
-        # Convert headers to collection
         r.headers = @_create_collection("headers", r.headers)
-        # Convert parameters to collection
         r.parameters = @_create_collection("parameters", r.parameters)
       )
 
     toJSON: ->
       _.tap(_.clone(@attributes), (attrs) ->
-        # Convert headers & parameters to array of ids
         attrs.headers = attrs.headers.pluck("id")
         attrs.parameters = attrs.parameters.pluck("id")
       )
