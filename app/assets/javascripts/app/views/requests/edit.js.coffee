@@ -1,12 +1,12 @@
 define [
   "marionette",
-  "app/collections/access_tokens",
+  "app/collections/connections",
   "text!app/templates/requests/edit.html"
-], (Marionette, AccessTokens, Template) ->
+], (Marionette, Connections, Template) ->
   class RequestsEditView extends Marionette.ItemView
     template: (serialized_model) =>
       attributes = _.extend(serialized_model,
-      access_tokens: @_access_tokens(), encodings: @_encodings)
+      connections: @_connections(), encodings: @_encodings)
       _.template(Template, attributes)
 
     events:
@@ -18,10 +18,10 @@ define [
       options[event.target.dataset.attribute] = event.target.value
       @model.save(options)
 
-    _access_tokens: ->
-      access_tokens = new AccessTokens()
-      access_tokens.fetch()
-      access_tokens.map((access_token) -> access_token.pick("id", "name"))
+    _connections: ->
+      connections = new Connections()
+      connections.fetch()
+      connections.map((connection) -> connection.pick("id", "name"))
 
     _encodings:
       [

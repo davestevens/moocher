@@ -1,6 +1,6 @@
 define [
-  "app/routers/access_tokens_router",
+  "app/routers/connections_router",
   "app/routers/requests_router",
-], (AccessTokensRouter, RequestsRouter) ->
-  access_tokens_router: new AccessTokensRouter()
+], (ConnectionsRouter, RequestsRouter) ->
+  connections_router: new ConnectionsRouter()
   requests_router: new RequestsRouter()
