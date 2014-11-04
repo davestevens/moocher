@@ -6,16 +6,12 @@ define [
   class ParametersView extends Marionette.CompositeView
     template: _.template(Template)
 
-    initialize: (options) -> @type = options.type
-
     childView: ParameterView
-
-    childViewOptions: -> { request: @model, type: @type }
 
     childViewContainer: ".list"
 
-    events: { "click #js-add": "add" }
+    events:
+      "click .js-add": -> @collection.create({})
 
-    add: (event) ->
-      model = @collection.create({})
-      @model.push("#{@type}_ids", model.id)
+    collectionEvents:
+      "sync": -> @model.trigger("change")

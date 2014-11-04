@@ -13,6 +13,9 @@ define [
       "keyup input:text": "update_attribute"
       "change select": "update_attribute"
 
+    modelEvents:
+      "change": -> @model.save()
+
     update_attribute: (event) ->
       options = {}
       options[event.target.dataset.attribute] = event.target.value
