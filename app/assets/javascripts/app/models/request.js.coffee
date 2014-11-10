@@ -9,41 +9,44 @@ define [
       connection_id: null
       path: "/"
       method: "GET"
-      header_ids: []
-      parameter_ids: []
+      headers: new Parameters()
+      parameters: new Parameters()
       encoding: "form"
 
-    push: (attribute, value) ->
-      array = _.clone(@get(attribute))
-      array.push(value)
-      @save(attribute, array)
+    parse: (response, _options) ->
+      _.tap(response, (r) =>
+        r.headers = @_create_collection("headers", r.headers)
+        r.parameters = @_create_collection("parameters", r.parameters)
+      )
 
-    splice: (attribute, value) ->
-      array = _.clone(@get(attribute))
-      @save(attribute, _.without(array, value))
+    toJSON: ->
+      _.tap(_.clone(@attributes), (attrs) ->
+        attrs.headers = attrs.headers.pluck("id")
+        attrs.parameters = attrs.parameters.pluck("id")
+      )
 
     options: ->
-      headers: @_parameters("header")
-      parameters: @_set_encoding(@_parameters("parameter"))
+      headers: @_parameters_to_hash("headers")
+      parameters: @_set_encoding(@_parameters_to_hash("parameters"))
 
     # private
 
-    _parameters: (type) ->
-      parameters = @_parameters_collection().selection(@get("#{type}_ids"))
-      @_parameters_to_hash(parameters)
+    # Create new Backbone.Collection or return current
+    _create_collection: (attribute, value) ->
+      if @get(attribute) instanceof Backbone.Collection
+        @get(attribute)
+      else
+        params = new Parameters()
+        params.fetch()
+        new Parameters(params.selection(value))
+
+    _parameters_to_hash: (type) ->
+      parameters = @get(type)
+      _.chain(parameters.where(active: true))
+        .map((model) -> [model.get("name"), model.get("value")])
+        .object()
+        .value()
 
     _set_encoding: (hash) ->
       return $.param(hash) if @get("encoding") == "form"
       hash
-
-    _parameters_collection: ->
-      parameters = new Parameters()
-      parameters.fetch()
-      parameters
-
-    _parameters_to_hash: (parameters) ->
-      _.chain(parameters)
-        .filter((model) -> model.get("active"))
-        .map((model) -> [model.get("name"), model.get("value")])
-        .object()
-        .value()

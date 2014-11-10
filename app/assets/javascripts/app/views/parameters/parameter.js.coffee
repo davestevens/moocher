@@ -6,13 +6,9 @@ define [
     events:
       "keyup input:text": "update_attribute"
       "change input:checkbox": "update_checkbox"
-      "click #js-remove": "remove_parameter"
+      "click .js-remove": -> @model.destroy()
 
     template: _.template(Template)
-
-    initialize: (options) ->
-      @request = options.request
-      @type = options.type
 
     update_attribute: (event) ->
       options = {}
@@ -23,7 +19,3 @@ define [
       options = {}
       options[event.target.dataset.attribute] = event.target.checked
       @model.save(options)
-
-    remove_parameter: ->
-      @request.splice("#{@type}_ids", @model.id)
-      @model.destroy()

@@ -32,27 +32,15 @@ define [
       @request.show(view)
 
     render_headers: ->
-      collection = new Parameters()
-      collection.fetch()
-
-      _headers = collection.selection(@model.get("header_ids"))
-      headers = new Parameters(_headers)
       view = new ParametersIndexView(
-        type: "header"
-        collection: headers
+        collection: @model.get("headers")
         model: @model
       )
       @headers.show(view)
 
     render_parameters: ->
-      collection = new Parameters()
-      collection.fetch()
-
-      _parameters = collection.selection(@model.get("parameter_ids"))
-      parameters = new Parameters(_parameters)
       view = new ParametersIndexView(
-        type: "parameter"
-        collection: parameters
+        collection: @model.get("parameters")
         model: @model
       )
       @parameters.show(view)

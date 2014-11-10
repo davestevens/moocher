@@ -17,36 +17,26 @@ define [
       expect(request.get("path")).to.equal("/")
       expect(request.get("method")).to.equal("GET")
 
-      expect(request.get("header_ids")).to.deep.equal([])
-      expect(request.get("parameter_ids")).to.deep.equal([])
+      expect(request.get("headers")).to.be.an.instanceOf(Backbone.Collection)
+      expect(request.get("parameters")).to.be.an.instanceOf(Backbone.Collection)
       expect(request.get("encoding")).to.deep.equal("form")
 
-    describe "#push", ->
-      it "adds a value to an array attribute", sinon.test ->
-        request = new Request(header_ids: [1, 2, 3])
-        request.url = "/fake/path"
+    describe "#parse", ->
+      xit "creates collections for headers and parameters", ->
 
-        request.push("header_ids", 4)
-
-        expect(request.get("header_ids")).to.deep.equal([1, 2, 3, 4])
-
-    describe "#splice", ->
-      it "remove a value to an array attribute", sinon.test ->
-        request = new Request(header_ids: [1, 2, 3])
-        request.url = "/fake/path"
-
-        request.splice("header_ids", 2)
-
-        expect(request.get("header_ids")).to.deep.equal([1, 3])
+    describe "#toJSON", ->
+      xit "converts headers and parameters to arry of ids", ->
 
     describe "#options", ->
       context "when using Form encoding", ->
-        it "returns headers and form encoded parameters", sinon.test ->
-          request = new Request(encoding: "form")
-          parameters = [new Backbone.Model(name: "foo", value: "bar",
-          active: true)]
-          parameters_collection = new Object(selection: -> parameters)
-          @stub(request, "_parameters_collection", -> parameters_collection)
+        it "returns headers and form encoded parameters", ->
+          params = new Backbone.Collection([
+            new Backbone.Model(name: "foo", value: "bar", active: true)
+          ])
+          request = new Request
+            encoding: "form"
+            headers: params
+            parameters: params
 
           result = request.options()
 
@@ -54,12 +44,14 @@ define [
             .to.deep.equal(headers: { foo: "bar" }, parameters: "foo=bar")
 
       context "when using JSON encoding", ->
-        it "returns headers and parameters hash", sinon.test ->
-          request = new Request(encoding: "json")
-          parameters = [new Backbone.Model(name: "foo", value: "bar",
-          active: true)]
-          parameters_collection = new Object(selection: -> parameters)
-          @stub(request, "_parameters_collection", -> parameters_collection)
+        it "returns headers and parameters hash", ->
+          params = new Backbone.Collection([
+            new Backbone.Model(name: "foo", value: "bar", active: true)
+          ])
+          request = new Request
+            encoding: "json"
+            headers: params
+            parameters: params
 
           result = request.options()
 
