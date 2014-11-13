@@ -3,7 +3,8 @@ define ["backbone"], (Backbone) ->
     defaults:
       method: ""
       url: ""
-      request_headers: ""
       status: ""
+      request_headers: ""
+      request_body: ""
       response_headers: ""
       body: ""
