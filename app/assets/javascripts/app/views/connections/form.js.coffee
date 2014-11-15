@@ -1,26 +1,31 @@
 define [
   "marionette",
   "jquery",
-  "serialize-object",
-], (Marionette, $, _SerializeObject) ->
-  class FormItemView extends Marionette.ItemView
+  "text!app/templates/connections/form/no_auth.html",
+  "text!app/templates/connections/form/oauth2.html",
+  "serialize-object"
+], (Marionette, $, NoAuth, OAuth2, _SerializeObject) ->
+  class ConnectionsFormView extends Marionette.ItemView
     initialize: ->
       @listenTo(@model, "sync", @_sync)
       @listenTo(@model, "invalid", @_invalid)
 
     events: { "submit form": "_submit_form" }
 
-    template: (serialized_model) =>
-      attributes = _.extend(serialized_model, @_template_extras())
-      _.template(@form_template, attributes)
+    getTemplate: -> _.template(@_get_template())
 
-    form_template: $.noop
+    templateHelpers: =>
+      action: @action
+      strategies: @model.strategies
+      button: @button
 
     # private
-    _template_extras: ->
-      strategies: @model.strategies
-      action: @action
-      button: @button
+
+    _get_template: -> @_templates[@model.get("type")]
+
+    _templates:
+      no_auth: NoAuth
+      oauth2: OAuth2
 
     _submit_form: (event) ->
       event.preventDefault()
@@ -30,7 +35,7 @@ define [
       @model.set($form.serializeObject())
       @collection.create(@model)
 
-    _sync: -> window.location.hash = "##{@route}/#{@model.id}"
+    _sync: -> window.location.hash = "#connections/#{@model.id}"
 
     _invalid: ->
       @_clear_form_errors()

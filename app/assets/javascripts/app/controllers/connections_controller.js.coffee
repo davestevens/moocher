@@ -1,5 +1,5 @@
 define [
-  "app/models/connection",
+  "app/models/connections/no_auth",
   "app/collections/connections",
   "app/views/connections/index",
   "app/views/connections/new",
@@ -14,6 +14,7 @@ define [
     @view = new IndexView(collection: connections)
 
   new: ->
+    # TODO: pick Connection Model based on something....
     connection = new Connection()
     connections = new Connections()
     @view = new NewView(model: connection, collection: connections)

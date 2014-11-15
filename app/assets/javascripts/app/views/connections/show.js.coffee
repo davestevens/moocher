@@ -1,8 +1,9 @@
 define [
   "marionette",
   "app/lib/oauth2/client",
-  "text!app/templates/connections/show.html"
-], (Marionette, Client, Template) ->
+  "text!app/templates/connections/show/no_auth.html",
+  "text!app/templates/connections/show/oauth2.html"
+], (Marionette, Client, NoAuth, OAuth2) ->
   class ConnectionsShowView extends Marionette.ItemView
     events:
       "click #validate_credentials": "_validate_credentials"
@@ -10,16 +11,18 @@ define [
 
     modelEvents: { "change": -> @render() }
 
-    template: (serialized_model) =>
-      attributes = _.extend(serialized_model, @_view_attributes())
-      _.template(Template, attributes)
+    getTemplate: -> _.template(@_get_template())
 
-    _view_attributes: ->
-      access_token = @model.access_token()
-      {
-        expires_at: new Date(access_token.expires_at)
-        expired: access_token.has_expired()
-      }
+    templateHelpers:
+      expires_at_date: -> new Date(@expires_at)
+
+    # private
+
+    _get_template: -> @_templates[@model.get("type")]
+
+    _templates:
+      no_auth: NoAuth
+      oauth2: OAuth2
 
     _validate_credentials: ->
       try @model.validate_access_token()

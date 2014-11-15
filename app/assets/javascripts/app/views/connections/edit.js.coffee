@@ -1,9 +1,4 @@
-define [
-  "app/services/form_item_view",
-  "text!app/templates/connections/form.html"
-], (FormItemView, Template) ->
-  class ConnectionsEditView extends FormItemView
-    form_template: Template
+define ["app/views/connections/form"], (ConnectionsFormView) ->
+  class ConnectionsEditView extends ConnectionsFormView
     action: "edit"
     button: "Update"
-    route: "connections"

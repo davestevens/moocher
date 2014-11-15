@@ -6,7 +6,7 @@ define [
   "app/services/proxy",
   "app/lib/oauth2/client"
 ], (Backbone, _, $, ModelErrors, Proxy, OAuth2Client) ->
-  class Connection extends Backbone.Model
+  class OAuth2 extends Backbone.Model
     defaults:
       name: ""
       strategy: null
