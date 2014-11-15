@@ -37,13 +37,13 @@ define ["app/lib/oauth2/client"], (Client) ->
 
         expect(result).to.equal("/oauth/token")
 
-    describe ".proxy", ->
-      it "returns the proxy given on initialization", ->
-        proxy = new Object()
+    describe ".connection", ->
+      it "returns the connection given on initialization", ->
+        connection = new Object()
 
-        result = new Client(proxy: proxy).proxy
+        result = new Client(connection: connection).connection
 
-        expect(result).to.equal(proxy)
+        expect(result).to.equal(connection)
 
       context "when passed on initialization", ->
         it "returns the token_path given on initialization", ->
@@ -54,35 +54,18 @@ define ["app/lib/oauth2/client"], (Client) ->
           expect(result).to.equal(token_path)
 
     describe "#get_token", ->
-      context "when using a proxy", ->
-        it "makes a synchronous request through proxy", sinon.test ->
-          token_path = "/token/path"
-          endpoint = "http://example.com"
-          client = new Client(endpoint: endpoint, token_path: token_path)
-          server_response(@server, "http://example.com/token/path")
+      it "makes a synchronous request", sinon.test ->
+        token_path = "/token/path"
+        endpoint = "http://example.com"
+        client = new Client(endpoint: endpoint, token_path: token_path)
+        server_response(@server, "http://example.com/token/path")
 
-          client.get_token({})
+        client.get_token({})
 
-          request = @requests[0]
-          expect(request.async).to.be.false
-          expect(request.method).to.equal("POST")
-          expect(request.url).to.equal("#{endpoint}#{token_path}")
-
-      context "when not using a proxy", sinon.test ->
-        it "makes a synchronous request", sinon.test ->
-          endpoint = "http://example.com"
-          proxy_settings =
-            path: "/proxy"
-            type: "POST"
-          client = new Client(endpoint: endpoint, proxy: proxy_settings)
-          server_response(@server, "/proxy")
-
-          client.get_token({})
-
-          request = @requests[0]
-          expect(request.async).to.be.false
-          expect(request.method).to.equal(proxy_settings.type)
-          expect(request.url).to.equal(proxy_settings.path)
+        request = @requests[0]
+        expect(request.async).to.be.false
+        expect(request.method).to.equal("POST")
+        expect(request.url).to.equal("#{endpoint}#{token_path}")
 
       context "when request is unsuccessful", ->
         it "throws an error", sinon.test ->
@@ -111,49 +94,21 @@ define ["app/lib/oauth2/client"], (Client) ->
         )
 
     describe "#request", ->
-      context "when using a proxy", ->
-        it "makes an asynchronous request through proxy", sinon.test ->
-          proxy_settings =
-            path: "/proxy"
-            type: "POST"
-          method = "GET"
-          path = "/request_path"
-          headers = { foo: "bar" }
-          parameters = { bish: "bosh" }
-          endpoint = "http://example.com"
-          client = new Client(endpoint: endpoint, proxy: proxy_settings)
+      it "makes an asynchronous request", sinon.test ->
+        method = "GET"
+        path = "/request_path"
+        headers = { foo: "bar" }
+        parameters = { bish: "bosh" }
+        endpoint = "http://example.com"
+        client = new Client(endpoint: endpoint)
 
-          client.request(method, path, headers: headers, parameters: parameters)
+        client.request(method, path, headers: headers, parameters: parameters)
 
-          request = @requests[0]
-          expect(request.async).to.be.true
-          expect(request.method).to.equal(proxy_settings.type)
-          expect(request.url).to.equal(proxy_settings.path)
-
-          expect(request.requestBody).to.include("type=#{method}")
-          expected_url = window.encodeURIComponent("#{endpoint}#{path}")
-          expect(request.requestBody).to.include("url=#{expected_url}")
-          expected_headers = window.encodeURI("headers[foo]=bar")
-          expect(request.requestBody).to.include(expected_headers)
-          expected_parameters = window.encodeURI("data[bish]=bosh")
-          expect(request.requestBody).to.include(expected_parameters)
-
-      context "when not using a proxy", ->
-        it "makes an asynchronous request", sinon.test ->
-          method = "GET"
-          path = "/request_path"
-          headers = { foo: "bar" }
-          parameters = { bish: "bosh" }
-          endpoint = "http://example.com"
-          client = new Client(endpoint: endpoint)
-
-          client.request(method, path, headers: headers, parameters: parameters)
-
-          request = @requests[0]
-          expect(request.async).to.be.true
-          expect(request.method).to.equal(method)
-          expect(request.url).to.equal("#{endpoint}#{path}?bish=bosh")
-          expect(request.requestHeaders).to.include(headers)
+        request = @requests[0]
+        expect(request.async).to.be.true
+        expect(request.method).to.equal(method)
+        expect(request.url).to.equal("#{endpoint}#{path}?bish=bosh")
+        expect(request.requestHeaders).to.include(headers)
 
     describe "#client_credentials", ->
       it "returns a ClientCredentials strategy", ->

@@ -1,32 +1,35 @@
 define [
   "jquery",
+  "app/lib/oauth2/services/connection_object",
   "app/lib/oauth2/strategies",
   "app/lib/oauth2/token"
-], ($, Strategies, Token) ->
+], ($, ConnectionObject, Strategies, Token) ->
   class Client
     constructor: (options) ->
       @id = options.id
       @secret = options.secret
       @endpoint = options.endpoint
       @token_path = options.token_path || "/oauth/token"
-      @proxy = options.proxy
+      @connection = options.connection || new ConnectionObject()
       @strategies =
         client_credentials: options.client_credentials || Strategies.client_credentials
         password: options.password || Strategies.password
 
     get_token: (options = {}) ->
       response = null
-      request_settings = $.extend({
+      _.extend(options, {
         success: (_data, _status, xhr) -> response = xhr
         error: (_xhr, _status, error) -> throw new Error(error)
         async: false
-      }, @_request_settings("post", @token_path, options))
+      })
+      url = @_build_url(@token_path)
 
-      $.ajax(request_settings)
+      @connection.request("post", url, options)
       response
 
     request: (method, path, options = {}) ->
-      $.ajax(@_request_settings(method, path, options))
+      url = @_build_url(path)
+      @connection.request(method, url, options)
 
     client_credentials: ->
       @_client_credentials ||= new @strategies.client_credentials(client: @)
@@ -36,20 +39,3 @@ define [
 
     # private
     _build_url: (path) -> "#{@endpoint}#{path}"
-
-    _request_settings: (method, post, options = {}) ->
-      if @proxy
-        @_proxy_request_options(method, post, options)
-      else
-        @_request_options(method, post, options)
-
-    _request_options: (method, path, options = {}) ->
-      type: method
-      url: @_build_url(path)
-      headers: options.headers
-      data: options.parameters
-
-    _proxy_request_options: (method, path, options = {}) ->
-      type: @proxy.type || "post"
-      url: @proxy.path
-      data: @_request_options(method, path, options)

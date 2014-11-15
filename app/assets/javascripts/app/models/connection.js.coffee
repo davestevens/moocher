@@ -3,8 +3,9 @@ define [
   "underscore",
   "jquery",
   "app/services/model_errors",
+  "app/services/proxy",
   "app/lib/oauth2/client"
-], (Backbone, _, $, ModelErrors, OAuth2Client) ->
+], (Backbone, _, $, ModelErrors, Proxy, OAuth2Client) ->
   class Connection extends Backbone.Model
     defaults:
       name: ""
@@ -54,6 +55,4 @@ define [
       id: @get("client_id")
       secret: @get("client_secret")
       endpoint: @get("endpoint")
-      proxy:
-        path: "/proxy"
-        type: "post"
+      connection: new Proxy()
