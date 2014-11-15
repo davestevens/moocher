@@ -2,10 +2,16 @@ require [
   "marionette",
   "backbone",
   "bootstrap",
-  "app/routers/routers",
+  "app/routers/connections_router",
+  "app/routers/requests_router",
   "backbone.dualStorage"
-], (Marionette, Backbone, Bootstrap, Routers, BackboneDualStorage) ->
+], (Marionette, Backbone, Bootstrap, ConnectionsRouter, RequestsRouter) ->
   App = new Marionette.Application()
+
+  App.addInitializer(->
+    new ConnectionsRouter()
+    new RequestsRouter()
+  )
 
   App.addInitializer(-> Backbone.history.start())
 
