@@ -1,5 +1,16 @@
 <div class="page-header">
-	<a class="btn btn-default btn-lg pull-right" href="#connections/new">New Connection</a>
+
+  <div class="dropdown pull-right">
+    <button class="btn btn-default btn-lg dropdown-toggle" type="button" data-toggle="dropdown">
+      New Connection
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <li><a role="menuitem" href="#connections/new/no_auth">No Authorization</a></li>
+      <li><a href="#connections/new/oauth2">OAuth2</a></li>
+    </ul>
+  </div>
+
   <h1>Connections#index</h1>
 </div>
 <div class="list-group"></div>

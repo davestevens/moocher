@@ -53,9 +53,9 @@ define [
     make_request: (event) ->
       event.preventDefault()
 
-      token_model = @_get_access_token(@model.get("connection_id"))
+      connection = @_get_connection(@model.get("connection_id"))
       options = @model.options()
-      token_model.request(@model.get("method"), @model.get("path"), options)
+      connection.request(@model.get("method"), @model.get("path"), options)
         .done( (data, status, xhr) =>
           @response_model.set
             method: @model.get("method")
@@ -78,7 +78,7 @@ define [
         )
 
     # private
-    _get_access_token: (id) ->
+    _get_connection: (id) ->
       connections = new Connections()
       connections.fetch()
       connections.get(id)

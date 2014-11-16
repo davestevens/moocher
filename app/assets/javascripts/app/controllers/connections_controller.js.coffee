@@ -1,20 +1,21 @@
 define [
-  "app/models/connection",
+  "app/services/connection_finder",
   "app/collections/connections",
   "app/views/connections/index",
   "app/views/connections/new",
   "app/views/connections/show",
   "app/views/connections/edit",
   "app/views/connections/delete"
-], (Connection, Connections, IndexView, NewView, ShowView, EditView,
+], (ConnectionFinder, Connections, IndexView, NewView, ShowView, EditView,
   DeleteView) ->
   index: ->
     connections = new Connections()
     connections.fetch()
     @view = new IndexView(collection: connections)
 
-  new: ->
-    connection = new Connection()
+  new: (type) ->
+    model = ConnectionFinder.model(type)
+    connection = new model()
     connections = new Connections()
     @view = new NewView(model: connection, collection: connections)
 

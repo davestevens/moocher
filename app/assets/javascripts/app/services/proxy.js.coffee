@@ -1,5 +1,5 @@
 define ["jquery"], ($) ->
-  # Makes jQueyr.ajax request through Proxy
+  # Makes jQuery.ajax request through Proxy
   #
   # Passes headers and parameters to Proxy, all other options are passed to
   # jQuery.ajax object

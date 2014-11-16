@@ -1,20 +1,31 @@
 define [
   "app/collections/connections",
-  "backbone"
-], (Connections, Backbone) ->
+  "backbone",
+  "app/models/connections/no_auth",
+  "app/models/connections/oauth2"
+], (Connections, Backbone, NoAuth, OAuth2) ->
   describe "Collections / Connections", ->
     it "is a Backbone Collection", ->
       connections = new Connections()
 
       expect(connections).to.be.an.instanceOf(Backbone.Collection)
 
-    describe ".model", ->
-      it "is a Connection Model", ->
-        connections = new Connections()
+    describe "#parse", ->
+      context "whem model type is 'no_auth'", ->
+        it "instantiates a 'NoAuth' model", ->
+          connections = new Connections()
 
-        result = connections.model
+          result = connections.parse([ { type: "no_auth" }])[0]
 
-        expect(result.name).to.equal("Connection")
+          expect(result).to.be.an.instanceOf(NoAuth)
+
+      context "whem model type is 'oauth2'", ->
+        it "instantiates a 'OAuth2' model", ->
+          connections = new Connections()
+
+          result = connections.parse([ { type: "oauth2" }])[0]
+
+          expect(result).to.be.an.instanceOf(OAuth2)
 
     describe "#url", ->
       it "is '/connections'", ->
