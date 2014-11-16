@@ -83,6 +83,35 @@ define ["app/models/connections/oauth2", "backbone"], (OAuth2, Backbone) ->
           expect(result).to.be.false
           expect(oauth2.validationError).to.contain.key("endpoint")
 
+      describe "Password Strategy", ->
+        valid_password_attributes =
+          endpoint: "endpoint"
+          client_id: "client_id"
+          client_secret: "client_secret"
+          strategy: "password"
+          username: "username"
+          password: "password"
+
+        context "with a blank username", ->
+          it "is invalid", ->
+            oauth2 = create_oauth2(valid_password_attributes)
+            oauth2.set(username: "")
+
+            result = oauth2.isValid()
+
+            expect(result).to.be.false
+            expect(oauth2.validationError).to.contain.key("username")
+
+        context "with a blank password", ->
+          it "is invalid", ->
+            oauth2 = create_oauth2(valid_password_attributes)
+            oauth2.set(password: "")
+
+            result = oauth2.isValid()
+
+            expect(result).to.be.false
+            expect(oauth2.validationError).to.contain.key("password")
+
     describe ".strategies", ->
       it "is a hash of available OAuth2 Strategies", ->
         oauth2 = create_oauth2()

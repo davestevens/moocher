@@ -28,6 +28,8 @@ define [
       errors = new ModelErrors(attrs)
       errors.validate_blank("endpoint", "client_id", "client_secret")
       errors.validate_inclusion("strategy", _.keys(@strategies))
+      if attrs.strategy == "password"
+        errors.validate_blank("username", "password")
       errors.result()
 
     strategies:

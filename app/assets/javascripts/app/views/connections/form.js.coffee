@@ -9,7 +9,9 @@ define [
       @listenTo(@model, "sync", @_sync)
       @listenTo(@model, "invalid", @_invalid)
 
-    events: { "submit form": "_submit_form" }
+    events:
+      "submit form": "_submit_form"
+      "change #strategy": -> @_toggle_strategy_extras(event.target.value)
 
     getTemplate: ->
       _.template(ConnectionFinder.form_template(@model.get("type")))
@@ -19,7 +21,14 @@ define [
       strategies: @model.strategies
       button: @button
 
+    onRender: ->
+      @_toggle_strategy_extras(@model.get("strategy"))
+
     # private
+
+    _toggle_strategy_extras: (strategy) ->
+      @$(".js-strategy_extras > div").hide()
+      @$(".#{strategy}_strategy").show() if strategy
 
     _submit_form: (event) ->
       event.preventDefault()

@@ -11,3 +11,6 @@ define [
 
     attributes: =>
       href: "#connections/#{@model.id}"
+
+    templateHelpers:
+      has_strategy: -> @strategy?
