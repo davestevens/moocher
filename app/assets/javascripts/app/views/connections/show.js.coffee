@@ -1,9 +1,8 @@
 define [
   "marionette",
   "app/lib/oauth2/client",
-  "text!app/templates/connections/show/no_auth.html",
-  "text!app/templates/connections/show/oauth2.html"
-], (Marionette, Client, NoAuth, OAuth2) ->
+  "app/services/connection_finder"
+], (Marionette, Client, ConnectionFinder) ->
   class ConnectionsShowView extends Marionette.ItemView
     events:
       "click #validate_credentials": "_validate_credentials"
@@ -11,19 +10,13 @@ define [
 
     modelEvents: { "change": -> @render() }
 
-    getTemplate: -> _.template(@_get_template())
+    getTemplate: -> _.template(ConnectionFinder.template(@model.get("type")))
 
     templateHelpers:
       expires_at_date: -> new Date(@expires_at)
       expired: -> @expires_at_date() < new Date()
 
     # private
-
-    _get_template: -> @_templates[@model.get("type")]
-
-    _templates:
-      no_auth: NoAuth
-      oauth2: OAuth2
 
     _validate_credentials: ->
       try @model.validate_access_token()

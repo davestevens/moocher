@@ -1,13 +1,12 @@
 define [
-  "app/models/connections/no_auth",
-  "app/models/connections/oauth2",
+  "app/services/connection_finder",
   "app/collections/connections",
   "app/views/connections/index",
   "app/views/connections/new",
   "app/views/connections/show",
   "app/views/connections/edit",
   "app/views/connections/delete"
-], (NoAuth, OAuth2, Connections, IndexView, NewView, ShowView, EditView,
+], (ConnectionFinder, Connections, IndexView, NewView, ShowView, EditView,
   DeleteView) ->
   index: ->
     connections = new Connections()
@@ -15,10 +14,8 @@ define [
     @view = new IndexView(collection: connections)
 
   new: (type) ->
-    types =
-      no_auth: NoAuth
-      oauth2: OAuth2
-    connection = new types[type]()
+    model = ConnectionFinder.model(type)
+    connection = new model()
     connections = new Connections()
     @view = new NewView(model: connection, collection: connections)
 

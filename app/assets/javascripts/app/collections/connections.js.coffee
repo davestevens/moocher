@@ -1,16 +1,16 @@
-define [
-  "backbone",
-  "app/models/connections/no_auth",
-  "app/models/connections/oauth2"
-], (Backbone, NoAuth, OAuth2) ->
+define ["backbone", "app/services/connection_finder"],
+(Backbone, ConnectionFinder) ->
   class Connections extends Backbone.Collection
     parse: (response, _options) ->
-      _(response).map((attributes) ->
-        switch attributes.type
-          when "no_auth" then new NoAuth(attributes)
-          when "oauth2" then new OAuth2(attributes)
+      _(response).map((attributes) =>
+        model = @_model_type(attributes.type)
+        new model(attributes)
       )
 
     url: -> "/connections"
 
     local: true
+
+    # private
+
+    _model_type: (type) -> ConnectionFinder.model(type)
