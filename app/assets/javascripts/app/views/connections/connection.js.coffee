@@ -7,7 +7,7 @@ define [
 
     className: "list-group-item"
 
-    template: _.template(Template)
+    getTemplate: -> _.template(Template)
 
     attributes: =>
       href: "#connections/#{@model.id}"

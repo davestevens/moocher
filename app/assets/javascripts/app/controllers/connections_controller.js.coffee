@@ -1,21 +1,24 @@
 define [
   "app/models/connections/no_auth",
+  "app/models/connections/oauth2",
   "app/collections/connections",
   "app/views/connections/index",
   "app/views/connections/new",
   "app/views/connections/show",
   "app/views/connections/edit",
   "app/views/connections/delete"
-], (Connection, Connections, IndexView, NewView, ShowView, EditView,
+], (NoAuth, OAuth2, Connections, IndexView, NewView, ShowView, EditView,
   DeleteView) ->
   index: ->
     connections = new Connections()
     connections.fetch()
     @view = new IndexView(collection: connections)
 
-  new: ->
-    # TODO: pick Connection Model based on something....
-    connection = new Connection()
+  new: (type) ->
+    types =
+      no_auth: NoAuth
+      oauth2: OAuth2
+    connection = new types[type]()
     connections = new Connections()
     @view = new NewView(model: connection, collection: connections)
 

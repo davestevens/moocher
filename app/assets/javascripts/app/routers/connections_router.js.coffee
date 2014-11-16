@@ -13,7 +13,7 @@ define [
 
     appRoutes:
       "connections": "index"
-      "connections/new": "new"
+      "connections/new/:type": "new"
       "connections/:id": "show"
       "connections/:id/edit": "edit"
       "connections/:id/delete": "delete"

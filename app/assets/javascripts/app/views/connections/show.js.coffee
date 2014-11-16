@@ -15,6 +15,7 @@ define [
 
     templateHelpers:
       expires_at_date: -> new Date(@expires_at)
+      expired: -> @expires_at_date() < new Date()
 
     # private
 

@@ -30,7 +30,7 @@
     <dt>Access Token</dt>
     <dd><%= access_token %></dd>
 
-    <div>
+    <div <% if(expired()) { %>class="bg-danger text-danger"<% } %>>
       <dt>Expires At</dt>
       <dd><%= expires_at_date() %></dd>
     </div>
