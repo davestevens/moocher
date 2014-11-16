@@ -7,22 +7,26 @@ define [
   "app/lib/oauth2/client"
 ], (Backbone, _, $, ModelErrors, Proxy, OAuth2Client) ->
   class OAuth2 extends Backbone.Model
+    initialize: (attributes, options = {}) ->
+      @proxy = options.proxy || new Proxy()
+
     defaults:
       name: ""
-      strategy: null
+      endpoint: null
       client_id: null
       client_secret: null
-      endpoint: null
+      strategy: null
       username: null
       password: null
       access_token: null
       expires_at: null
       refresh_token: null
       token_type: "bearer"
+      type: "oauth2"
 
     validate: (attrs, options) ->
       errors = new ModelErrors(attrs)
-      errors.validate_blank("client_id", "client_secret", "endpoint")
+      errors.validate_blank("endpoint", "client_id", "client_secret")
       errors.validate_inclusion("strategy", _.keys(@strategies))
       errors.result()
 
@@ -55,4 +59,4 @@ define [
       id: @get("client_id")
       secret: @get("client_secret")
       endpoint: @get("endpoint")
-      connection: new Proxy()
+      connection: @proxy
