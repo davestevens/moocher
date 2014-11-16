@@ -29,4 +29,6 @@ define [
       try @model.validate_access_token()
       catch err then alert(err)
 
-    _refresh: -> @model.refresh()
+    _refresh: ->
+      try @model.refresh()
+      catch err then alert(err)
