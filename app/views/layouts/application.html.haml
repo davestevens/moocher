@@ -1,0 +1,20 @@
+!!!
+%html
+  %head
+    %title JSConsole
+    %meta{ name: "viewport",
+           content: "width=device-width, initial-scale=1, maximum-scale=1" }
+    = stylesheet_link_tag("application", media: "all")
+    = requirejs_include_tag("application")
+    = csrf_meta_tags
+  %body{ class: controller_name }
+    #wrap
+      = render "layouts/header"
+      %section#main.container-fluid
+
+        - flash.each do |type, msg|
+          %div{:class => "alert alert-#{type == :notice ? "success" : "danger"} fadeout", "data-dismiss" => "alert"}
+            %button.close &times;
+            = msg if msg.is_a?(String)
+
+        = yield

@@ -1,0 +1,9 @@
+<h4><%= title() %></h4>
+<h4>Request Headers</h4>
+<pre><%= escape(format_request_headers()) %></pre>
+<h4>Request Body</h4>
+<pre><%= escape(json_stringify(request_body)) %></pre>
+<h4>Response Headers</h4>
+<pre><%= escape(response_headers) %></pre>
+<h4>Response Body</h4>
+<pre><%= escape(json_stringify(body)) %></pre>

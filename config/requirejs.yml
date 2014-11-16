@@ -1,0 +1,19 @@
+modules:
+  - name: "application"
+paths:
+  bootstrap: "bootstrap/dist/js/bootstrap"
+  jquery: "jquery/dist/jquery"
+  marionette: "marionette/lib/backbone.marionette"
+  backbone: "backbone/backbone"
+  "backbone.dualStorage": "Backbone.dualStorage/backbone.dualstorage.amd"
+  text: "requirejs-text/text"
+  serialize-object: "jquery-serialize-object/jquery.serialize-object"
+shim:
+  bootstrap:
+    deps: ["jquery"]
+  backbone:
+    deps: ["underscore", "jquery"]
+  marionette:
+    deps: ["backbone"]
+  "backbone.dualStorage":
+    deps: ["backbone"]

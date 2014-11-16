@@ -1,0 +1,26 @@
+<input class="form-control" data-attribute="name" placeholder="Name" value="<%= name %>"/>
+<br>
+<input class="form-control" data-attribute="path" placeholder="Path" value="<%= path %>"/>
+<input class="form-control" data-attribute="method" placeholder="Method" value="<%= method %>"/>
+<br>
+<div class="form-group">
+  <label for="connection_id">Connection</label>
+  <select class="form-control" data-attribute="connection_id" id="connection_id">
+    <option value>Select a Connection</option>
+      <% _.each(connections, function(connection) { %>
+      <option <% if (connection_id == connection.id) { %> selected <% } %> value="<%= connection.id %>">
+        <%= connection.name %>
+      </option>
+    <% }); %>
+  </select>
+</div>
+<div class="form-group">
+  <label for="encoding">Encoding</label>
+  <select class="form-control" data-attribute="encoding" id="encoding">
+    <% _.each(encodings, function(enc) { %>
+      <option <% if (encoding == enc.value) { %> selected <% } %> value="<%= enc.value %>">
+        <%= enc.label %>
+      </option>
+    <% }); %>
+  </select>
+</div>
