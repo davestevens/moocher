@@ -1,10 +1,9 @@
 define [
   "marionette",
   "jquery",
-  "text!app/templates/connections/form/no_auth.html",
-  "text!app/templates/connections/form/oauth2.html",
+  "app/services/connection_finder",
   "serialize-object"
-], (Marionette, $, NoAuth, OAuth2, _SerializeObject) ->
+], (Marionette, $, ConnectionFinder, _SerializeObject) ->
   class ConnectionsFormView extends Marionette.ItemView
     initialize: ->
       @listenTo(@model, "sync", @_sync)
@@ -12,7 +11,8 @@ define [
 
     events: { "submit form": "_submit_form" }
 
-    getTemplate: -> _.template(@_get_template())
+    getTemplate: ->
+      _.template(ConnectionFinder.form_template(@model.get("type")))
 
     templateHelpers: =>
       action: @action
@@ -20,12 +20,6 @@ define [
       button: @button
 
     # private
-
-    _get_template: -> @_templates[@model.get("type")]
-
-    _templates:
-      no_auth: NoAuth
-      oauth2: OAuth2
 
     _submit_form: (event) ->
       event.preventDefault()

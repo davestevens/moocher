@@ -10,7 +10,8 @@ define [
 
     modelEvents: { "change": -> @render() }
 
-    getTemplate: -> _.template(ConnectionFinder.template(@model.get("type")))
+    getTemplate: ->
+      _.template(ConnectionFinder.show_template(@model.get("type")))
 
     templateHelpers:
       expires_at_date: -> new Date(@expires_at)

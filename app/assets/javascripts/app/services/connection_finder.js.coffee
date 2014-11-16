@@ -1,12 +1,18 @@
 define [
   "app/models/connections/no_auth",
   "text!app/templates/connections/show/no_auth.html",
+  "text!app/templates/connections/form/no_auth.html",
   "app/models/connections/oauth2",
-  "text!app/templates/connections/show/oauth2.html"
-], (NoAuthModel, NoAuthTemplate, OAuth2Model, OAuth2Template) ->
+  "text!app/templates/connections/show/oauth2.html",
+  "text!app/templates/connections/form/oauth2.html"
+], (NoAuthModel, NoAuthShow, NoAuthForm, OAuth2Model, OAuth2Show, OAuth2Form) ->
   model: (type) -> @get(type).model
 
-  template: (type) -> @get(type).template
+  show_template: (type) -> @template(type).show
+
+  form_template: (type) -> @template(type).form
+
+  template: (type) -> @get(type).templates
 
   get: (type) -> @_connections[type]
 
@@ -15,7 +21,11 @@ define [
   _connections:
     no_auth:
       model: NoAuthModel
-      template: NoAuthTemplate
+      templates:
+        show: NoAuthShow
+        form: NoAuthForm
     oauth2:
       model: OAuth2Model
-      template: OAuth2Template
+      templates:
+        show: OAuth2Show
+        form: OAuth2Form
